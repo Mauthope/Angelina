@@ -56,52 +56,60 @@
     button:hover {
       background: #4cae4c;
     }
+
+    #map {
+      height: 300px;
+      width: 100%;
+      margin-top: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Formulário de Propriedades Rurais</h1>
     <form id="propriedadeForm">
-      <label for="nomePropriedade">Nome da Propriedade:</label>
-      <input type="text" id="nomePropriedade" name="nomePropriedade" required>
-
-      <!-- Outros campos omitidos por brevidade -->
-
-      <label for="gpsLocation">Localização (Latitude e Longitude):</label>
-      <div>
-        <button type="button" id="getLocationButton">Adicionar Localização</button>
-        <input type="text" id="gpsLocation" name="gpsLocation" readonly required placeholder="Clique para adicionar localização">
-      </div>
-
+      <!-- Outros campos do formulário -->
+      <label for="localizacao">Localização:</label>
+      <button type="button" id="btnLocalizacao" onclick="capturarLocalizacao()">Adicionar Localização</button>
+      <div id="map"></div>
+      
       <button type="submit">Enviar</button>
     </form>
   </div>
-
   <script>
-    document.getElementById('getLocationButton').addEventListener('click', function () {
+    let mapa, marcador;
+
+    function capturarLocalizacao() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            document.getElementById('gpsLocation').value = `${latitude}, ${longitude}`;
+          (posicao) => {
+            const { latitude, longitude } = posicao.coords;
+
+            const coordenadas = { lat: latitude, lng: longitude };
+            if (!mapa) {
+              mapa = new google.maps.Map(document.getElementById("map"), {
+                center: coordenadas,
+                zoom: 15,
+              });
+            }
+            if (marcador) marcador.setMap(null);
+            marcador = new google.maps.Marker({
+              position: coordenadas,
+              map: mapa,
+              title: "Sua localização",
+            });
           },
-          (error) => {
-            alert('Erro ao obter localização: ' + error.message);
+          (erro) => {
+            alert("Não foi possível obter a localização: " + erro.message);
           }
         );
       } else {
-        alert('Geolocalização não é suportada pelo seu navegador.');
+        alert("Geolocalização não é suportada pelo seu navegador.");
       }
-    });
-
-    // Validação final ao enviar o formulário
-    document.getElementById('propriedadeForm').addEventListener('submit', function (event) {
-      const locationField = document.getElementById('gpsLocation');
-      if (!locationField.value) {
-        alert('Por favor, adicione a localização antes de enviar.');
-        event.preventDefault();
-      }
-    });
+    }
   </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 </body>
 </html>
