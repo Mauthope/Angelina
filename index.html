@@ -3,72 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulário de Propriedades</title>
+  <title>Formulário com Localização</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #5cb85c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4cae4c;
+    }
+
+    #map {
+      margin-top: 15px;
+      width: 100%;
+      height: 300px;
+      display: none;
+    }
+  </style>
 </head>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
-  }
-
-  .container {
-    width: 80%;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  label {
-    margin-top: 15px;
-    font-weight: bold;
-  }
-
-  input, select, button {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  button {
-    margin-top: 20px;
-    background: #5cb85c;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #4cae4c;
-  }
-
-  #map {
-    height: 400px;
-    width: 100%;
-    margin-top: 15px;
-  }
-</style>
-
 <body>
   <div class="container">
-    <h1>Formulário de Propriedades Rurais</h1>
+    <h1>Formulário com Localização</h1>
     <form id="propriedadeForm">
       <label for="nomePropriedade">Nome da Propriedade:</label>
       <input type="text" id="nomePropriedade" name="nomePropriedade" required>
@@ -76,71 +75,9 @@
       <label for="dataVisita">Data da Visita:</label>
       <input type="date" id="dataVisita" name="dataVisita" required>
 
-      <label for="producaoLeite">Produção de Leite (L):</label>
-      <input type="number" id="producaoLeite" name="producaoLeite" required>
-
-      <label for="vacasLactacao">Número de Vacas em Lactação:</label>
-      <input type="number" id="vacasLactacao" name="vacasLactacao" required>
-
-      <label for="quantPrimiparas">Quantidade de Primíparas:</label>
-      <input type="number" id="quantPrimiparas" name="quantPrimiparas" required>
-
-      <label for="mediaLeite">Média de Leite (L):</label>
-      <input type="number" id="mediaLeite" name="mediaLeite" step="0.1" required>
-
-      <fieldset>
-        <legend>Lotes</legend>
-        <label for="lote1">Lote 1 (quantas vacas):</label>
-        <input type="number" id="lote1" name="lote1" required>
-
-        <label for="lote2">Lote 2 (quantas vacas):</label>
-        <input type="number" id="lote2" name="lote2" required>
-
-        <label for="lote3">Lote 3 (quantas vacas):</label>
-        <input type="number" id="lote3" name="lote3" required>
-      </fieldset>
-
-      <label for="delMedio">Del Médio (dias):</label>
-      <input type="number" id="delMedio" name="delMedio" required>
-
-      <label for="tmrComposicao">TMR Composição:</label>
-      <input type="text" id="tmrComposicao" name="tmrComposicao" required>
-
-      <label for="kgSilagem">Quantos kg de Silagem:</label>
-      <input type="number" id="kgSilagem" name="kgSilagem" step="0.1" required>
-
-      <label for="kgFeno">Quantos kg de Feno:</label>
-      <input type="number" id="kgFeno" name="kgFeno" step="0.1" required>
-
-      <label for="kgPreSecado">Quantos kg de Pré-secado:</label>
-      <input type="number" id="kgPreSecado" name="kgPreSecado" step="0.1" required>
-
-      <label for="kgRacao">Quantos kg de Ração:</label>
-      <input type="number" id="kgRacao" name="kgRacao" step="0.1" required>
-
-      <label for="sobrasCoxo">Quantidade de Sobras no Cocho:</label>
-      <input type="number" id="sobrasCoxo" name="sobrasCoxo" step="0.1" required>
-
-      <label for="tempoSilagem">Tempo disponível de Silagem, Feno e Pré-secado (dias):</label>
-      <input type="number" id="tempoSilagem" name="tempoSilagem" required>
-
-      <label for="vacasPreParto">Número de Vacas em Pré-parto:</label>
-      <input type="number" id="vacasPreParto" name="vacasPreParto" required>
-
-      <label for="dietaPreParto">Dieta no Pré-parto:</label>
-      <select id="dietaPreParto" name="dietaPreParto" required>
-        <option value="sim">Sim</option>
-        <option value="nao">Não</option>
-      </select>
-
-      <label for="escoreCocho">Escore de Cocho:</label>
-      <input type="number" id="escoreCocho" name="escoreCocho" step="0.1" required>
-
-      <label for="escoreCorporal">Escore Condição Corporal:</label>
-      <input type="number" id="escoreCorporal" name="escoreCorporal" step="0.1" required>
-
-      <label for="localizacao">Adicionar Localização:</label>
-      <button type="button" id="adicionarLocalizacao" onclick="adicionarLocalizacao()">Obter Localização</button>
+      <!-- Campo para localização -->
+      <label>Localização da Propriedade:</label>
+      <button type="button" id="getLocation">Adicionar Localização</button>
       <div id="map"></div>
 
       <button type="submit">Enviar</button>
@@ -148,40 +85,46 @@
   </div>
 
   <script>
-    let map;
-    let marker;
+    const getLocationButton = document.getElementById('getLocation');
+    const mapDiv = document.getElementById('map');
 
-    function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: -15.7801, lng: -47.9292 }, // Posição inicial (Brasília)
-        zoom: 10,
-      });
+    getLocationButton.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert('Geolocalização não é suportada pelo seu navegador.');
+      }
+    });
+
+    function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // Exibe o mapa
+      mapDiv.style.display = 'block';
+      mapDiv.innerHTML = `<iframe 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        style="border:0" 
+        src="https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed">
+      </iframe>`;
     }
 
-    function adicionarLocalizacao() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const location = { lat: lat, lng: lng };
-
-          if (marker) {
-            marker.setPosition(location);
-          } else {
-            marker = new google.maps.Marker({
-              position: location,
-              map: map,
-              draggable: false, // Não permite que o usuário mova o marcador
-            });
-          }
-
-          map.setCenter(location); // Centraliza o mapa na localização do usuário
-          map.setZoom(15); // Define o nível de zoom
-
-          document.getElementById("adicionarLocalizacao").disabled = true; // Desabilita o botão após clicar
-        });
-      } else {
-        alert("Geolocalização não é suportada pelo seu navegador.");
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert('Usuário negou a permissão de localização.');
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert('Informações de localização estão indisponíveis.');
+          break;
+        case error.TIMEOUT:
+          alert('A requisição de localização demorou muito.');
+          break;
+        case error.UNKNOWN_ERROR:
+          alert('Ocorreu um erro desconhecido.');
+          break;
       }
     }
   </script>
