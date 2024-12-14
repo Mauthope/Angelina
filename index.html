@@ -74,6 +74,7 @@
 
       <label for="dataVisita">Data da Visita:</label>
       <input type="date" id="dataVisita" name="dataVisita" required>
+      
       <label for="producaoLeite">Produção de Leite (L):</label>
       <input type="number" id="producaoLeite" name="producaoLeite" required>
 
@@ -136,6 +137,7 @@
 
       <label for="escoreCorporal">Escore Condição Corporal:</label>
       <input type="number" id="escoreCorporal" name="escoreCorporal" step="0.1" required>
+
       <!-- Campo para localização -->
       <label>Localização da Propriedade:</label>
       <button type="button" id="getLocation">Adicionar Localização</button>
@@ -188,6 +190,106 @@
           break;
       }
     }
+
+    // Função para armazenar os dados no localStorage
+    function saveFormData() {
+      const formData = {
+        nomePropriedade: document.getElementById('nomePropriedade').value,
+        dataVisita: document.getElementById('dataVisita').value,
+        producaoLeite: document.getElementById('producaoLeite').value,
+        vacasLactacao: document.getElementById('vacasLactacao').value,
+        quantPrimiparas: document.getElementById('quantPrimiparas').value,
+        mediaLeite: document.getElementById('mediaLeite').value,
+        lote1: document.getElementById('lote1').value,
+        lote2: document.getElementById('lote2').value,
+        lote3: document.getElementById('lote3').value,
+        delMedio: document.getElementById('delMedio').value,
+        tmrComposicao: document.getElementById('tmrComposicao').value,
+        kgSilagem: document.getElementById('kgSilagem').value,
+        kgFeno: document.getElementById('kgFeno').value,
+        kgPreSecado: document.getElementById('kgPreSecado').value,
+        kgRacao: document.getElementById('kgRacao').value,
+        sobrasCoxo: document.getElementById('sobrasCoxo').value,
+        tempoSilagem: document.getElementById('tempoSilagem').value,
+        vacasPreParto: document.getElementById('vacasPreParto').value,
+        dietaPreParto: document.getElementById('dietaPreParto').value,
+        escoreCocho: document.getElementById('escoreCocho').value,
+        escoreCorporal: document.getElementById('escoreCorporal').value,
+      };
+
+      const storedData = JSON.parse(localStorage.getItem('formData')) || [];
+      storedData.push(formData);
+      localStorage.setItem('formData', JSON.stringify(storedData));
+    }
+
+    // Função para enviar os dados para o Google Sheets (via API)
+   function sendToGoogleSheets(formData) {
+  // Verifica se a geolocalização está disponível
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      // Obtém as coordenadas
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      // Adiciona as coordenadas ao objeto formData
+      formData.latitude = latitude;
+      formData.longitude = longitude;
+
+      // Agora envia os dados incluindo a localização
+      const sheetID = '1F-BudKkExs65hQuWLNQN3UPrl_J0xP0Uf4fF0piijL4'; // Substitua com o ID da sua planilha
+      const scriptURL = `https://script.google.com/macros/s/AKfycbyNFoi7iZWu-aZy5U1YDPsJWzw4mXvsaLYFNzykTzbzecg8lJNy_hiDBx7Q7GH8RS4r/exec`;
+
+      fetch(scriptURL, { method: 'GET' })
+        .then(response => {
+          if (response.ok) {
+            alert('Dados enviados com sucesso!');
+          } else {
+            alert('Erro ao enviar dados');
+          }
+        })
+        .catch(error => {
+          alert('Erro ao enviar dados');
+        });
+    }, function(error) {
+      alert('Erro ao obter localização: ' + error.message);
+    });
+  } else {
+    alert('Geolocalização não é suportada neste navegador.');
+  }
+}
+
+    // Envia os dados ao submeter o formulário
+    document.getElementById('propriedadeForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = {
+        nomePropriedade: document.getElementById('nomePropriedade').value,
+        dataVisita: document.getElementById('dataVisita').value,
+        producaoLeite: document.getElementById('producaoLeite').value,
+        vacasLactacao: document.getElementById('vacasLactacao').value,
+        quantPrimiparas: document.getElementById('quantPrimiparas').value,
+        mediaLeite: document.getElementById('mediaLeite').value,
+        lote1: document.getElementById('lote1').value,
+        lote2: document.getElementById('lote2').value,
+        lote3: document.getElementById('lote3').value,
+        delMedio: document.getElementById('delMedio').value,
+        tmrComposicao: document.getElementById('tmrComposicao').value,
+        kgSilagem: document.getElementById('kgSilagem').value,
+        kgFeno: document.getElementById('kgFeno').value,
+        kgPreSecado: document.getElementById('kgPreSecado').value,
+        kgRacao: document.getElementById('kgRacao').value,
+        sobrasCoxo: document.getElementById('sobrasCoxo').value,
+        tempoSilagem: document.getElementById('tempoSilagem').value,
+        vacasPreParto: document.getElementById('vacasPreParto').value,
+        dietaPreParto: document.getElementById('dietaPreParto').value,
+        escoreCocho: document.getElementById('escoreCocho').value,
+        escoreCorporal: document.getElementById('escoreCorporal').value,
+      };
+
+      // Armazenar os dados offline e enviar para o Google Sheets
+      saveFormData();
+      sendToGoogleSheets(formData);
+    });
   </script>
 </body>
 </html>
