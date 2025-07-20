@@ -144,6 +144,8 @@
       <!-- Campo para localização -->
       <label>Localização da Propriedade:</label>
       <button type="button" id="getLocation">Adicionar Localização</button>
+      <input type="text" id="localizacaoPreenchida" name="localizacaoPreenchida" required style="display: none;">
+
       <div id="map"></div>
 
       <button type="submit">Enviar</button>
@@ -165,6 +167,10 @@
     function showPosition(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
+
+
+      document.getElementById('localizacaoPreenchida').value = 'ok';
+
 
       // Exibe o mapa
       mapDiv.style.display = 'block';
