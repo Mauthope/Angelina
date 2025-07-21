@@ -260,6 +260,8 @@ function sendToGoogleSheets(formData) {
         .then(response => {
           if (response.ok) {
             alert('Dados enviados com sucesso!');
+            document.getElementById('propriedadeForm').reset(); // limpa o formulário
+    mapDiv.style.display = 'none'; // esconde o mapa novamente
           } else {
             alert('Erro ao enviar dados');
           }
